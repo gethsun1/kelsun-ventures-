@@ -7,7 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node scripts/seed-data.js"
+    "seed": "node scripts/seed-data.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset",
+    "db:setup:dev": "cp prisma/schema.sqlite.prisma prisma/schema.prisma && prisma generate && prisma db push && npm run seed",
+    "db:setup:prod": "prisma generate && prisma migrate deploy"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

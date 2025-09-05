@@ -1,0 +1,144 @@
+// Development schema for SQLite
+// Use this for local development: cp prisma/schema.sqlite.prisma prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and profile management
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("user")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // NextAuth.js relations
+  accounts Account[]
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// Business models
+model InventoryItem {
+  id              String   @id @default(cuid())
+  name            String
+  unitCost        Float
+  currentStock    Int      @default(0)
+  reorderThreshold Int     @default(10)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  adjustments Adjustment[]
+
+  @@map("inventory_items")
+}
+
+model MpesaEntry {
+  id                String   @id @default(cuid())
+  date              DateTime
+  type              String   // "start_of_day" or "end_of_day"
+  startingFloat     Float?   // For start of day entries
+  deposits          Float?   // For end of day entries
+  withdrawals       Float?   // For end of day entries
+  fees              Float?   // For end of day entries
+  endingFloat       Float?   // For end of day entries
+  netChange         Float?   // Calculated field
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("mpesa_entries")
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  date        DateTime
+  category    String
+  description String?
+  amount      Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("expenses")
+}
+
+model Adjustment {
+  id             String        @id @default(cuid())
+  type           String        // "item_picked" or "stock_adjustment"
+  date           DateTime
+  description    String?
+  amount         Float?        // For monetary adjustments
+  quantity       Int?          // For stock adjustments
+  inventoryItemId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  // Relations
+  inventoryItem  InventoryItem? @relation(fields: [inventoryItemId], references: [id])
+
+  @@map("adjustments")
+}
+
+model Investment {
+  id           String   @id @default(cuid())
+  investorName String
+  startDate    DateTime
+  capital      Float
+  currentProfit Float   @default(0)
+  profitShare  Float    // Percentage (e.g., 0.3 for 30%)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("investments")
+}
