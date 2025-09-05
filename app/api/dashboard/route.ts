@@ -46,7 +46,7 @@ export async function GET() {
       : 0
 
     // Calculate Low Stock Items
-    const [currentLowStock, previousLowStock] = await Promise.all([
+    const [currentLowStock] = await Promise.all([
       prisma.inventoryItem.count({
         where: {
           currentStock: {

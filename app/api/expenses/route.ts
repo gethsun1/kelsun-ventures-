@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const endDate = searchParams.get("endDate")
     const category = searchParams.get("category")
 
-    const whereClause: any = {}
+    const whereClause: Record<string, unknown> = {}
     
     if (startDate && endDate) {
       whereClause.date = {

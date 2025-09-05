@@ -138,14 +138,14 @@ export default function AdjustmentsPage() {
     {
       key: "date",
       header: "Date",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) => new Date(value as string).toLocaleDateString(),
     },
     {
       key: "type",
       header: "Type",
       render: (value) => (
         <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-          {value === "item_picked" ? "Item Picked" : value}
+          {value === "item_picked" ? "Item Picked" : String(value)}
         </span>
       ),
     },
@@ -167,7 +167,7 @@ export default function AdjustmentsPage() {
     {
       key: "description",
       header: "Description",
-      render: (value) => value || "-",
+      render: (value) => String(value || "-"),
     },
   ]
 
@@ -175,26 +175,26 @@ export default function AdjustmentsPage() {
     {
       key: "date",
       header: "Date",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) => new Date(value as string).toLocaleDateString(),
     },
     {
       key: "category",
       header: "Category",
       render: (value) => (
         <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-          {value}
+          {String(value)}
         </span>
       ),
     },
     {
       key: "amount",
       header: "Amount",
-      render: (value) => `KSH ${value.toLocaleString()}`,
+      render: (value) => `KSH ${(value as number).toLocaleString()}`,
     },
     {
       key: "description",
       header: "Description",
-      render: (value) => value || "-",
+      render: (value) => String(value || "-"),
     },
   ]
 

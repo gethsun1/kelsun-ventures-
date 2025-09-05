@@ -67,7 +67,7 @@ export default function DashboardPage() {
               Dashboard
             </Typography>
             <Typography variant="muted">
-              Welcome back! Here's what's happening with your business today.
+              Welcome back! Here&apos;s what&apos;s happening with your business today.
             </Typography>
           </div>
           <Button>

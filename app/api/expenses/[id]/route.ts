@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -31,9 +31,11 @@ export async function PUT(
       )
     }
 
+    const { id } = await params
+
     // Check if expense exists
     const existingExpense = await prisma.expense.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingExpense) {
@@ -44,7 +46,7 @@ export async function PUT(
     }
 
     const expense = await prisma.expense.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         date: new Date(date),
         category,
@@ -65,7 +67,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -73,9 +75,11 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     // Check if expense exists
     const existingExpense = await prisma.expense.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingExpense) {
@@ -86,7 +90,7 @@ export async function DELETE(
     }
 
     await prisma.expense.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ message: "Expense deleted successfully" })

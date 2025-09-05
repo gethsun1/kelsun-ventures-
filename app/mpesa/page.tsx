@@ -58,7 +58,7 @@ export default function MpesaPage() {
     {
       key: "date",
       header: "Date",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) => new Date(value as string).toLocaleDateString(),
     },
     {
       key: "type",
@@ -76,22 +76,22 @@ export default function MpesaPage() {
     {
       key: "startingFloat",
       header: "Starting Float",
-      render: (value) => value ? `KSH ${value.toLocaleString()}` : "-",
+      render: (value) => value ? `KSH ${(value as number).toLocaleString()}` : "-",
     },
     {
       key: "deposits",
       header: "Deposits",
-      render: (value) => value ? `KSH ${value.toLocaleString()}` : "-",
+      render: (value) => value ? `KSH ${(value as number).toLocaleString()}` : "-",
     },
     {
       key: "withdrawals",
       header: "Withdrawals",
-      render: (value) => value ? `KSH ${value.toLocaleString()}` : "-",
+      render: (value) => value ? `KSH ${(value as number).toLocaleString()}` : "-",
     },
     {
       key: "fees",
       header: "Fees",
-      render: (value) => value ? `KSH ${value.toLocaleString()}` : "-",
+      render: (value) => value ? `KSH ${(value as number).toLocaleString()}` : "-",
     },
     {
       key: "netChange",
@@ -101,7 +101,7 @@ export default function MpesaPage() {
         const isPositive = value >= 0
         return (
           <span className={`font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
-            {isPositive ? "+" : ""}KSH {value.toLocaleString()}
+            {isPositive ? "+" : ""}KSH {(value as number).toLocaleString()}
           </span>
         )
       },

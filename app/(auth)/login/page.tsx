@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { signIn, getSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
@@ -65,7 +65,7 @@ export default function LoginPage() {
       } else {
         router.push("/dashboard")
       }
-    } catch (error) {
+    } catch {
       setErrors({ general: "An error occurred. Please try again." })
     } finally {
       setIsLoading(false)
@@ -137,7 +137,7 @@ export default function LoginPage() {
 
         <div className="text-center">
           <Typography variant="muted">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/register" className="text-blue-900 hover:underline font-medium">
               Sign up
             </Link>

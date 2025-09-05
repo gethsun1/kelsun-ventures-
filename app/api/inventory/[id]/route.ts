@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,10 +15,11 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
     const { name, unitCost, currentStock, reorderThreshold } = await request.json()
 
     const item = await prisma.inventoryItem.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(name && { name }),
         ...(unitCost !== undefined && { unitCost: parseFloat(unitCost) }),
@@ -39,7 +40,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -47,8 +48,10 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     await prisma.inventoryItem.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ success: true })

@@ -193,14 +193,14 @@ export default function ExpensesPage() {
     {
       key: "date",
       header: "Date",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) => new Date(value as string).toLocaleDateString(),
     },
     {
       key: "category",
       header: "Category",
       render: (value) => (
         <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-          {value}
+          {String(value)}
         </span>
       ),
     },
@@ -218,7 +218,7 @@ export default function ExpensesPage() {
       header: "Amount",
       render: (value) => (
         <span className="font-semibold text-red-600">
-          KSH {value.toLocaleString()}
+          KSH {(value as number).toLocaleString()}
         </span>
       ),
     },

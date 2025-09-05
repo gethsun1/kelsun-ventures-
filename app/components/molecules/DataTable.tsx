@@ -5,7 +5,7 @@ import { Typography } from "../atoms/Typography"
 export interface Column<T> {
   key: keyof T | string
   header: string
-  render?: (value: any, row: T) => React.ReactNode
+  render?: (value: unknown, row: T) => React.ReactNode
   className?: string
 }
 

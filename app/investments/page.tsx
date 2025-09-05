@@ -103,26 +103,26 @@ export default function InvestmentsPage() {
       header: "Investor Name",
       render: (value) => (
         <Typography variant="small" className="font-medium">
-          {value}
+          {String(value)}
         </Typography>
       ),
     },
     {
       key: "startDate",
       header: "Start Date",
-      render: (value) => new Date(value).toLocaleDateString(),
+      render: (value) => new Date(value as string).toLocaleDateString(),
     },
     {
       key: "capital",
       header: "Capital",
-      render: (value) => `KSH ${value.toLocaleString()}`,
+      render: (value) => `KSH ${(value as number).toLocaleString()}`,
     },
     {
       key: "currentProfit",
       header: "Current Profit",
       render: (value) => (
         <span className={value >= 0 ? "text-green-600" : "text-red-600"}>
-          KSH {value.toLocaleString()}
+          KSH {(value as number).toLocaleString()}
         </span>
       ),
     },
