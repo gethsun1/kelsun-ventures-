@@ -105,7 +105,7 @@ export default function Home() {
 
         <div className="text-center">
           <Typography variant="muted">
-            © 2024 KelSun Ventures. All rights reserved.
+            © {new Date().getFullYear()} KelSun Ventures. All rights reserved.
           </Typography>
         </div>
       </div>

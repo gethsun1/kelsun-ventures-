@@ -40,7 +40,7 @@ const AuthLayout = React.forwardRef<HTMLDivElement, AuthLayoutProps>(
           
           <div className="text-center mt-6">
             <Typography variant="muted" className="text-xs">
-              © 2024 KelSun Ventures. All rights reserved.
+              © {new Date().getFullYear()} KelSun Ventures. All rights reserved.
             </Typography>
           </div>
         </div>
