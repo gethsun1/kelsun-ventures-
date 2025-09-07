@@ -49,6 +49,15 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error("Registration error:", error)
+    
+    // Check if it's a database connection error
+    if (error instanceof Error && error.message.includes('connect')) {
+      return NextResponse.json(
+        { error: "Database connection failed. Please check your database configuration." },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
