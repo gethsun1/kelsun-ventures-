@@ -1,6 +1,6 @@
 import useSWR from "swr"
 
-export interface Investment {
+export interface Investment extends Record<string, unknown> {
   id: string
   investorName: string
   startDate: string

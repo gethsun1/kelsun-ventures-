@@ -1,6 +1,6 @@
 import useSWR from "swr"
 
-export interface Expense {
+export interface Expense extends Record<string, unknown> {
   id: string
   date: string
   category: string

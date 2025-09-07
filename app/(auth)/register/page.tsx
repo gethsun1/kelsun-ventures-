@@ -86,7 +86,7 @@ export default function RegisterPage() {
         const data = await response.json()
         setErrors({ general: data.error || "Registration failed" })
       }
-    } catch (error) {
+    } catch {
       setErrors({ general: "An error occurred. Please try again." })
     } finally {
       setIsLoading(false)

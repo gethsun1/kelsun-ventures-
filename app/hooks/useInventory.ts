@@ -1,6 +1,6 @@
 import useSWR from "swr"
 
-export interface InventoryItem {
+export interface InventoryItem extends Record<string, unknown> {
   id: string
   name: string
   unitCost: number

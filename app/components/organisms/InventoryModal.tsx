@@ -84,7 +84,7 @@ const InventoryModal = React.forwardRef<HTMLDivElement, InventoryModalProps>(
           reorderThreshold: parseInt(formData.reorderThreshold),
         })
         onClose()
-      } catch (error) {
+      } catch {
         setErrors({ general: "Failed to save item. Please try again." })
       }
     }

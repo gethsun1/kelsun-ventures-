@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Plus, DollarSign, TrendingUp, Users, Calendar } from "lucide-react"
+import { Plus, DollarSign, TrendingUp, Users } from "lucide-react"
 import { DashboardLayout } from "../components/templates/DashboardLayout"
 import { Typography } from "../components/atoms/Typography"
 import { Button } from "../components/atoms/Button"
@@ -90,7 +90,7 @@ export default function InvestmentsPage() {
         capital: "",
         profitShare: "",
       })
-    } catch (error) {
+    } catch {
       setErrors({ general: "Failed to create investment" })
     } finally {
       setIsSubmitting(false)
@@ -121,7 +121,7 @@ export default function InvestmentsPage() {
       key: "currentProfit",
       header: "Current Profit",
       render: (value) => (
-        <span className={value >= 0 ? "text-green-600" : "text-red-600"}>
+        <span className={(value as number) >= 0 ? "text-green-600" : "text-red-600"}>
           KSH {(value as number).toLocaleString()}
         </span>
       ),
@@ -129,18 +129,18 @@ export default function InvestmentsPage() {
     {
       key: "profitShare",
       header: "Profit Share",
-      render: (value) => `${(value * 100).toFixed(1)}%`,
+      render: (value) => `${((value as number) * 100).toFixed(1)}%`,
     },
     {
       key: "isActive",
       header: "Status",
       render: (value) => (
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-          value 
+          value as boolean
             ? "bg-green-100 text-green-800" 
             : "bg-gray-100 text-gray-800"
         }`}>
-          {value ? "Active" : "Inactive"}
+          {value as boolean ? "Active" : "Inactive"}
         </span>
       ),
     },

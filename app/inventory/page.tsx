@@ -45,7 +45,7 @@ export default function InventoryPage() {
     if (window.confirm(`Are you sure you want to delete "${item.name}"?`)) {
       try {
         await deleteItem(item.id)
-      } catch (error) {
+      } catch {
         alert("Failed to delete item")
       }
     }
@@ -71,7 +71,7 @@ export default function InventoryPage() {
       render: (value, row) => (
         <div className="flex items-center gap-2">
           <Typography variant="small" className="font-medium">
-            {value}
+            {String(value)}
           </Typography>
           {row.currentStock <= row.reorderThreshold && (
             <Icon icon={AlertTriangle} size="sm" color="warning" />
@@ -82,21 +82,21 @@ export default function InventoryPage() {
     {
       key: "unitCost",
       header: "Unit Cost",
-      render: (value) => `KSH ${value.toFixed(2)}`,
+      render: (value) => `KSH ${(value as number).toFixed(2)}`,
     },
     {
       key: "currentStock",
       header: "Current Stock",
       render: (value, row) => (
         <span className={row.currentStock <= row.reorderThreshold ? "text-red-600 font-medium" : ""}>
-          {value} units
+          {value as number} units
         </span>
       ),
     },
     {
       key: "reorderThreshold",
       header: "Reorder At",
-      render: (value) => `${value} units`,
+      render: (value) => `${value as number} units`,
     },
     {
       key: "actions",

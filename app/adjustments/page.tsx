@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Plus, ShoppingCart, Receipt, Calculator } from "lucide-react"
+import { ShoppingCart, Receipt, Calculator } from "lucide-react"
 import { DashboardLayout } from "../components/templates/DashboardLayout"
 import { Typography } from "../components/atoms/Typography"
 import { Button } from "../components/atoms/Button"
@@ -92,7 +92,7 @@ export default function AdjustmentsPage() {
         date: new Date().toISOString().split('T')[0],
         description: "",
       })
-    } catch (error) {
+    } catch {
       setErrors({ general: "Failed to record item picked" })
     } finally {
       setIsSubmitting(false)
@@ -127,7 +127,7 @@ export default function AdjustmentsPage() {
         date: new Date().toISOString().split('T')[0],
         description: "",
       })
-    } catch (error) {
+    } catch {
       setErrors({ general: "Failed to record expense" })
     } finally {
       setIsSubmitting(false)

@@ -9,7 +9,7 @@ export interface Column<T> {
   className?: string
 }
 
-export interface DataTableProps<T> {
+export interface DataTableProps<T = Record<string, unknown>> {
   data: T[]
   columns: Column<T>[]
   className?: string
@@ -17,7 +17,7 @@ export interface DataTableProps<T> {
   onRowClick?: (row: T) => void
 }
 
-function DataTable<T extends Record<string, any>>({
+function DataTable<T = Record<string, unknown>>({
   data,
   columns,
   className,
@@ -65,7 +65,14 @@ function DataTable<T extends Record<string, any>>({
                 >
                   {columns.map((column, colIndex) => {
                     const value = typeof column.key === 'string' && column.key.includes('.') 
-                      ? column.key.split('.').reduce((obj, key) => obj?.[key], row)
+                      ? (() => {
+                          const keys = column.key.split('.')
+                          let result: unknown = row
+                          for (const key of keys) {
+                            result = (result as Record<string, unknown>)?.[key]
+                          }
+                          return result
+                        })()
                       : row[column.key as keyof T]
                     
                     return (
@@ -76,7 +83,7 @@ function DataTable<T extends Record<string, any>>({
                           column.className
                         )}
                       >
-                        {column.render ? column.render(value, row) : value}
+                        {column.render ? column.render(value, row) : String(value ?? '')}
                       </td>
                     )
                   })}

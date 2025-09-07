@@ -10,7 +10,7 @@ import { Icon } from "./components/atoms/Icon"
 import { Typography } from "./components/atoms/Typography"
 
 export default function Home() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const router = useRouter()
 
   useEffect(() => {

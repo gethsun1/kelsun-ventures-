@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Plus, Search, Calendar, Filter, Edit, Trash2, DollarSign, TrendingUp, TrendingDown } from "lucide-react"
+import { Plus, Search, Filter, Edit, Trash2, DollarSign, TrendingUp, TrendingDown } from "lucide-react"
 import { DashboardLayout } from "../components/templates/DashboardLayout"
 import { Typography } from "../components/atoms/Typography"
 import { Button } from "../components/atoms/Button"
@@ -34,7 +34,7 @@ export default function ExpensesPage() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [editingExpense, setEditingExpense] = React.useState<Expense | null>(null)
   
-  const { expenses, isLoading, createExpense, updateExpense, deleteExpense, mutate } = useExpenses(startDate, endDate, category)
+  const { expenses, isLoading, createExpense, updateExpense, deleteExpense } = useExpenses(startDate, endDate, category)
   
   const [formData, setFormData] = React.useState({
     date: new Date().toISOString().split('T')[0],
@@ -85,13 +85,13 @@ export default function ExpensesPage() {
     return ((thisMonthExpenses - lastMonthExpenses) / lastMonthExpenses) * 100
   }, [thisMonthExpenses, lastMonthExpenses])
 
-  const categoryBreakdown = React.useMemo(() => {
-    const breakdown: Record<string, number> = {}
-    expenses.forEach(expense => {
-      breakdown[expense.category] = (breakdown[expense.category] || 0) + expense.amount
-    })
-    return breakdown
-  }, [expenses])
+  // const categoryBreakdown = React.useMemo(() => {
+  //   const breakdown: Record<string, number> = {}
+  //   expenses.forEach(expense => {
+  //     breakdown[expense.category] = (breakdown[expense.category] || 0) + expense.amount
+  //   })
+  //   return breakdown
+  // }, [expenses])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -154,7 +154,7 @@ export default function ExpensesPage() {
         description: "",
         amount: "",
       })
-    } catch (error) {
+    } catch {
       setErrors({ general: editingExpense ? "Failed to update expense" : "Failed to create expense" })
     } finally {
       setIsSubmitting(false)
@@ -176,7 +176,7 @@ export default function ExpensesPage() {
     if (window.confirm(`Are you sure you want to delete "${expense.description || expense.category}" expense?`)) {
       try {
         await deleteExpense(expense.id)
-      } catch (error) {
+      } catch {
         alert("Failed to delete expense")
       }
     }
@@ -209,7 +209,7 @@ export default function ExpensesPage() {
       header: "Description",
       render: (value) => (
         <Typography variant="small" className="font-medium">
-          {value || "No description"}
+          {String(value) || "No description"}
         </Typography>
       ),
     },

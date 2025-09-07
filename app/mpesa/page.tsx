@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, Smartphone, TrendingUp, TrendingDown } from "lucide-react"
+import { Smartphone, TrendingUp, TrendingDown } from "lucide-react"
 import { DashboardLayout } from "../components/templates/DashboardLayout"
 import { Typography } from "../components/atoms/Typography"
 import { Button } from "../components/atoms/Button"
@@ -47,7 +47,7 @@ export default function MpesaPage() {
       await createEntry(data)
       setShowStartForm(false)
       setShowEndForm(false)
-    } catch (error) {
+    } catch {
       alert("Failed to create entry")
     } finally {
       setIsSubmitting(false)
@@ -98,7 +98,7 @@ export default function MpesaPage() {
       header: "Net Change",
       render: (value) => {
         if (value === null || value === undefined) return "-"
-        const isPositive = value >= 0
+        const isPositive = (value as number) >= 0
         return (
           <span className={`font-medium ${isPositive ? "text-green-600" : "text-red-600"}`}>
             {isPositive ? "+" : ""}KSH {(value as number).toLocaleString()}

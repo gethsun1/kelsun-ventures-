@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Calendar, DollarSign } from "lucide-react"
+import { DollarSign } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "../atoms/Button"
 import { Input } from "../atoms/Input"
@@ -23,7 +23,7 @@ export interface MpesaEntry {
 export interface MpesaEntryFormProps {
   type: "start_of_day" | "end_of_day"
   initialData?: Partial<MpesaEntry>
-  onSubmit: (data: MpesaEntry) => void
+  onSubmit: (data: Omit<MpesaEntry, "id" | "createdAt" | "updatedAt" | "netChange">) => void
   onCancel?: () => void
   isLoading?: boolean
   className?: string

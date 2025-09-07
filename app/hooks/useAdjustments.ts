@@ -1,6 +1,6 @@
 import useSWR from "swr"
 
-export interface Adjustment {
+export interface Adjustment extends Record<string, unknown> {
   id: string
   type: string
   date: string

@@ -1,6 +1,6 @@
 import useSWR from "swr"
 
-export interface MpesaEntry {
+export interface MpesaEntry extends Record<string, unknown> {
   id: string
   date: string
   type: "start_of_day" | "end_of_day"
