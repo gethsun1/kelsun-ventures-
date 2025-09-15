@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
+import { Prisma } from "@prisma/client"
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,9 +33,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check database connection first
-    await prisma.$connect()
-
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email }
@@ -64,9 +62,9 @@ export async function POST(request: NextRequest) {
     const { password: _, ...userWithoutPassword } = user
 
     return NextResponse.json(
-      { 
+      {
         message: "User created successfully",
-        user: userWithoutPassword 
+        user: userWithoutPassword,
       },
       { status: 201 }
     )
@@ -83,7 +81,7 @@ export async function POST(request: NextRequest) {
       })
 
       // Database connection errors
-      if (error.message.includes('connect') || 
+      if (error.message.includes('connect') ||
           error.message.includes('ECONNREFUSED') ||
           error.message.includes('ENOTFOUND') ||
           error.message.includes('timeout')) {
@@ -93,8 +91,9 @@ export async function POST(request: NextRequest) {
         )
       }
       
-      // Unique constraint violations
-      if (error.message.includes('Unique constraint') || 
+      // Prisma error handling by code
+      if ((error as any).code === 'P2002' ||
+          error.message.includes('Unique constraint') ||
           error.message.includes('duplicate key')) {
         return NextResponse.json(
           { error: "User with this email already exists" },
@@ -103,9 +102,9 @@ export async function POST(request: NextRequest) {
       }
 
       // Prisma specific errors
-      if (error.message.includes('Prisma')) {
+      if ((error as any).code === 'P2021' || (error as any).code === 'P2022' || error.message.includes('relation') || error.message.includes('Prisma')) {
         return NextResponse.json(
-          { error: "Database operation failed. Please try again." },
+          { error: "Database schema not initialized. Please run migrations." },
           { status: 500 }
         )
       }
@@ -115,8 +114,5 @@ export async function POST(request: NextRequest) {
       { error: "An unexpected error occurred. Please try again." },
       { status: 500 }
     )
-  } finally {
-    // Ensure connection is closed
-    await prisma.$disconnect()
   }
 }
