@@ -11,16 +11,16 @@ async function testNeonConnection() {
   console.log('🔍 Testing Neon database connection...\n');
   
   // Check environment variables
-  const postgresUrl = process.env.POSTGRES_PRISMA_URL;
+  const postgresUrl = process.env.DATABASE_URL || process.env.POSTGRES_PRISMA_URL || process.env.POSTGRES_URL_NO_SSL;
   const postgresUrlNoSsl = process.env.POSTGRES_URL_NO_SSL;
   
   console.log('Environment Variables:');
-  console.log(`- POSTGRES_PRISMA_URL: ${postgresUrl ? '✅ Set' : '❌ Not set'}`);
+  console.log(`- DATABASE_URL/POSTGRES_PRISMA_URL: ${postgresUrl ? '✅ Set' : '❌ Not set'}`);
   console.log(`- POSTGRES_URL_NO_SSL: ${postgresUrlNoSsl ? '✅ Set' : '❌ Not set'}`);
   console.log(`- NODE_ENV: ${process.env.NODE_ENV || 'undefined'}\n`);
   
   if (!postgresUrl) {
-    console.error('❌ POSTGRES_PRISMA_URL is not set!');
+    console.error('❌ DATABASE_URL is not set!');
     console.log('💡 Make sure you have pulled the latest environment variables from Vercel:');
     console.log('   vercel env pull .env.development.local');
     process.exit(1);

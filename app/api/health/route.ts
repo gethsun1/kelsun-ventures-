@@ -15,7 +15,7 @@ export async function GET() {
       userCount,
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV,
-      databaseUrl: process.env.POSTGRES_PRISMA_URL ? "Neon (POSTGRES_PRISMA_URL)" : "Standard (DATABASE_URL)",
+      databaseUrl: process.env.DATABASE_URL ? "Standard (DATABASE_URL)" : (process.env.POSTGRES_PRISMA_URL ? "Neon (POSTGRES_PRISMA_URL)" : "Not set"),
     })
   } catch (error) {
     console.error("Health check failed:", error)
@@ -27,7 +27,7 @@ export async function GET() {
         error: error instanceof Error ? error.message : "Unknown error",
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV,
-        databaseUrl: process.env.POSTGRES_PRISMA_URL ? "Neon (POSTGRES_PRISMA_URL)" : "Standard (DATABASE_URL)",
+        databaseUrl: process.env.DATABASE_URL ? "Standard (DATABASE_URL)" : (process.env.POSTGRES_PRISMA_URL ? "Neon (POSTGRES_PRISMA_URL)" : "Not set"),
       },
       { status: 500 }
     )
