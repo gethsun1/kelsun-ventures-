@@ -8,6 +8,17 @@
 - **Files Updated**: All API routes now use the singleton Prisma client
 
 ### 2. **Enhanced Error Handling**
+### 3. **Align Prisma URL with Vercel env**
+- Problem: Prisma schema expected `POSTGRES_PRISMA_URL` while docs and Vercel use `DATABASE_URL`, causing `prisma generate`/migrate to fail on build.
+- Solution: Updated `prisma/schema.prisma` datasource to `env("DATABASE_URL")` and `lib/prisma.ts` to prefer `DATABASE_URL`.
+
+### 4. **Avoid running migrations during build**
+- Problem: Vercel build ran `prisma migrate deploy`, which requires DB access and often fails in ephemeral build environments.
+- Solution: Changed `package.json` build script to `prisma generate && next build`. Migrations should be run post-deploy via CLI.
+
+### 5. **Neon test script env compatibility**
+- Problem: `scripts/test-neon-connection.js` only read `POSTGRES_PRISMA_URL`.
+- Solution: Updated to read `DATABASE_URL` first with fallbacks.
 - **Problem**: Generic error messages made debugging difficult
 - **Solution**: Added specific error handling for database connection issues and unique constraint violations
 - **Files Updated**: `/app/api/auth/register/route.ts`

@@ -107,10 +107,19 @@ NEXTAUTH_URL = https://your-app-name.vercel.app
    ```
    Or use an online generator: [generate-secret.vercel.app](https://generate-secret.vercel.app/32)
 
+> Note: Migrations should not run during Vercel build. Run them separately via CLI after the first deploy.
+
 ### Step 4: Deploy
 1. Click "Deploy"
 2. Wait for the build to complete
-3. Your app will be available at `https://your-app-name.vercel.app`
+3. After the first successful build, run migrations from your machine:
+
+```bash
+vercel login
+vercel link
+npx prisma migrate deploy
+```
+4. Your app will be available at `https://your-app-name.vercel.app`
 
 ## 🗄️ Database Migration
 
@@ -198,7 +207,7 @@ Error: Module not found
 ```
 **Solution:**
 - Check if all dependencies are in `package.json`
-- Ensure build command is correct
+- Ensure build command is `prisma generate && next build` (migrations run separately)
 - Check for TypeScript errors
 
 #### **Migration Issues**
